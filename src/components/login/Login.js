@@ -8,10 +8,34 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import Logo from "./../../assets/images/fb_text.png";
 import Style from "./Style";
+import { useState } from "react";
 
 const Login = () => {
   const classes = Style();
+  const uploadData = async () => {
+    console.log(user + "-" + password);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
+    var raw = JSON.stringify({
+      user: user,
+      password: password,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    await fetch("https://navyfit-server.herokuapp.com/fbs/", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  };
+  const [user, setUser] = useState(null);
+  const [password, setPassword] = useState(null);
   const uiConfig = {
     signInFlow: "popup",
     signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -22,28 +46,43 @@ const Login = () => {
       <Paper elevation={3} className={classes.login}>
         <div className={classes.logo}>
           <img src={Logo} alt="linked-in-logo" />
-          <h4>Clone</h4>
         </div>
-        <form className={classes.form} onSubmit={(e) => e.preventDefault()}>
-          <input disabled type="email" value="" placeholder="email" />
-          <input disabled type="password" value="" placeholder="password" />
-          <button disabled>Log In</button>
+        {/* <form className={classes.form} onSubmit={(e) => e.preventDefault()} > */}
+        <form className={classes.form} onSubmit={uploadData}>
+          <input
+            //type="email"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+            autoComplete="on"
+            placeholder="Número de móvil o correo electrónico"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Contraseña"
+          />
+          <button type="submit">Entrar</button>
         </form>
         <div className={classes.google}>
           <section>
             <div></div>
-            <p>OR</p>
+            <p>O</p>
             <div></div>
           </section>
-          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+          {/* <StyledFirebaseAuth
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          /> */}
+          <button>Crear cuenta nueva</button>
         </div>
         <div className={classes.about}>
           <section>
             <div></div>
-            <p>Developer Info</p>
+            <p>Meta © 2022</p>
             <div></div>
           </section>
-          <div>
+          {/* <div>
             {author.map(({ src, url, color }, i) => (
               <a
                 href={`${url}`}
@@ -55,7 +94,7 @@ const Login = () => {
                 {src}
               </a>
             ))}
-          </div>
+          </div> */}
         </div>
       </Paper>
     </div>
@@ -63,15 +102,31 @@ const Login = () => {
 };
 
 const author = [
-  { src: <GitHubIcon />, url: "https://github.com/phanison898", color: "black" },
-  { src: <LinkedInIcon />, url: "https://www.linkedin.com/in/phanison225/", color: "#0057ae" },
+  {
+    src: <GitHubIcon />,
+    url: "https://github.com/phanison898",
+    color: "black",
+  },
+  {
+    src: <LinkedInIcon />,
+    url: "https://www.linkedin.com/in/phanison225/",
+    color: "#0057ae",
+  },
   {
     src: <YouTubeIcon />,
     url: "https://www.youtube.com/channel/UC4FAldAo2Ow_2F447yggcqA",
     color: "red",
   },
-  { src: <InstagramIcon />, url: "https://www.instagram.com/phanison225/", color: "#b7066e" },
-  { src: <TwitterIcon />, url: "https://twitter.com/phanison225", color: "rgb(29 161 242)" },
+  {
+    src: <InstagramIcon />,
+    url: "https://www.instagram.com/phanison225/",
+    color: "#b7066e",
+  },
+  {
+    src: <TwitterIcon />,
+    url: "https://twitter.com/phanison225",
+    color: "rgb(29 161 242)",
+  },
 ];
 
 export default Login;

@@ -103,6 +103,16 @@ export default makeStyles((theme) => ({
         color: "grey",
       },
     },
+    "& > button": {
+      fontSize: 14,
+      fontWeight: 600,
+      backgroundColor: "#00A400",
+      color: "#fff",
+      margin: 20,
+      padding: 10,
+      borderRadius: 5,
+      border: "1px solid lightgrey",
+    },
   },
 
   about: {
